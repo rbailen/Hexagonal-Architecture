@@ -1,0 +1,17 @@
+server:
+  port: 8080
+
+logging:
+  level:
+    es.rbailen.sample.hexagonalarchitecture: info
+
+spring:
+  jpa:
+    show-sql: false
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=- 1;DB_CLOSE_ON_EXIT=FALSE
+    username: test
+    password: test
