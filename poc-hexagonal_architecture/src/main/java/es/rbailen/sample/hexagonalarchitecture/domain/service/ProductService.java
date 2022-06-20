@@ -27,13 +27,7 @@ public class ProductService implements CreateProductUseCase, GetProductUseCase {
 
     @Override
     public Product getProductById(Long id) {
-        Optional<Product> product = productOutputPort.getProductById(id);
-
-        if(product.isEmpty()) {
-            throw new ProductNotFound("Product not found with id " + id);
-        }
-
-        return product.get();
+        return productOutputPort.getProductById(id).orElseThrow(() -> new ProductNotFound("Product not found with id " + id));
     }
 
 }
