@@ -8,6 +8,6 @@ public interface ProductOutputPort {
 
     Product saveProduct(Product product);
 
-    Optional<Product> getProductById(Long id);
+    Optional<Product> getProductById(Integer id);
 
 }

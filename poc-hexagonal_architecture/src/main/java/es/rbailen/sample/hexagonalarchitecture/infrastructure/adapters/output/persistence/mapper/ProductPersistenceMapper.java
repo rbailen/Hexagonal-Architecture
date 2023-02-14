@@ -1,14 +1,17 @@
 package es.rbailen.sample.hexagonalarchitecture.infrastructure.adapters.output.persistence.mapper;
 
 import es.rbailen.sample.hexagonalarchitecture.domain.model.Product;
-import es.rbailen.sample.hexagonalarchitecture.infrastructure.adapters.output.persistence.entity.ProductEntity;
+import es.rbailen.sample.hexagonalarchitecture.infrastructure.adapters.output.persistence.entity.ProductE;
 import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 @Mapper
 public interface ProductPersistenceMapper {
 
-    ProductEntity toProductEntity(Product product);
+    ProductPersistenceMapper INSTANCE = Mappers.getMapper(ProductPersistenceMapper.class);
 
-    Product toProduct(ProductEntity productEntity);
+    ProductE toProductEntity(Product product);
+
+    Product toProduct(ProductE productEntity);
 
 }

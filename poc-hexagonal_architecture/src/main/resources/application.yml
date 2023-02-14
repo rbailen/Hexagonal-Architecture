@@ -1,17 +1,42 @@
+management:
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      base-path: /management
+      exposure:
+        include: ["configprops", "env", "metrics", "prometheus", "health", "info", "threaddump", "mappings"]
 server:
   port: 8080
 
-logging:
-  level:
-    es.rbailen.sample.hexagonalarchitecture: info
-
 spring:
   jpa:
-    show-sql: false
-  h2:
-    console:
-      enabled: true
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
   datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=- 1;DB_CLOSE_ON_EXIT=FALSE
-    username: test
-    password: test
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile:
+        - test
+  datasource:
+    url: jdbc:tc:postgresql:///testdb?TC_IMAGE_TAG=14-alpine
+  jpa:
+    hibernate:
+      ddl-auto: update
+---
