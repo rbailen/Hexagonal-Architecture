@@ -2,36 +2,30 @@ package es.rbailen.sample.hexagonalarchitecture.infrastructure.adapters.output.p
 
 import es.rbailen.sample.hexagonalarchitecture.application.ports.output.ProductOutputPort;
 import es.rbailen.sample.hexagonalarchitecture.domain.model.Product;
-import es.rbailen.sample.hexagonalarchitecture.infrastructure.adapters.output.persistence.entity.ProductEntity;
 import es.rbailen.sample.hexagonalarchitecture.infrastructure.adapters.output.persistence.mapper.ProductPersistenceMapper;
 import es.rbailen.sample.hexagonalarchitecture.infrastructure.adapters.output.persistence.repository.ProductRepository;
-import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
 
-@RequiredArgsConstructor
-public class ProductPersistenceAdapter implements ProductOutputPort {
-
-    private final ProductRepository productRepository;
-
-    private final ProductPersistenceMapper productPersistenceMapper;
+public record ProductPersistenceAdapter(ProductRepository productRepository)
+        implements ProductOutputPort {
 
     @Override
     public Product saveProduct(Product product) {
-        ProductEntity productEntity = productPersistenceMapper.toProductEntity(product);
-        productEntity = productRepository.save(productEntity);
-        return productPersistenceMapper.toProduct(productEntity);
+        final var productEntity = ProductPersistenceMapper.INSTANCE.toProductEntity(product);
+        final var productE = productRepository.save(productEntity);
+        return ProductPersistenceMapper.INSTANCE.toProduct(productE);
     }
 
     @Override
-    public Optional<Product> getProductById(Long id) {
-        Optional<ProductEntity> productEntity = productRepository.findById(id);
+    public Optional<Product> getProductById(Integer id) {
+        final var productEntity = productRepository.findById(id);
 
-        if(productEntity.isEmpty()) {
+        if (productEntity.isEmpty()) {
             return Optional.empty();
         }
 
-        Product product = productPersistenceMapper.toProduct(productEntity.get());
+        Product product = ProductPersistenceMapper.INSTANCE.toProduct(productEntity.get());
         return Optional.of(product);
     }
 
